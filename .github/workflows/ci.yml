@@ -1,24 +1,28 @@
-name: CI
+name: AegisTrace CI
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [ main ]
   pull_request:
-    branches: [ master, main ]
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Java
+      - name: Make Maven Wrapper Executable
+        run: chmod +x mvnw
+
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: '21'   # Change to 17 if your pom.xml uses Java 17
           cache: maven
 
-      - name: Test
-        run: ./mvnw test
+      - name: Build Project
+        run: ./mvnw clean verify
