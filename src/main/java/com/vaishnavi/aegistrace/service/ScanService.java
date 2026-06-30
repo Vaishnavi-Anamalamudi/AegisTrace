@@ -110,15 +110,20 @@ public class ScanService {
         return savedScan;
     }
 
+    @Transactional(readOnly = true)
     public List<ScanResult> findAllScans() {
-        return scanResultRepository.findAllByOrderByTimestampDesc();
+        List<ScanResult> scans = scanResultRepository.findAllByOrderByTimestampDesc();
+        scans.forEach(this::initializeScanCollections);
+        return scans;
     }
 
+    @Transactional(readOnly = true)
     public List<ScanResult> searchScans(String query) {
-        if (!hasText(query)) {
-            return findAllScans();
-        }
-        return scanResultRepository.findByTargetContainingIgnoreCaseOrDomainContainingIgnoreCaseOrderByTimestampDesc(query, query);
+        List<ScanResult> scans = !hasText(query)
+                ? scanResultRepository.findAllByOrderByTimestampDesc()
+                : scanResultRepository.findByTargetContainingIgnoreCaseOrDomainContainingIgnoreCaseOrderByTimestampDesc(query, query);
+        scans.forEach(this::initializeScanCollections);
+        return scans;
     }
 
     @Transactional
@@ -449,6 +454,15 @@ public class ScanService {
 
     private boolean hasText(String value) {
         return value != null && !value.isBlank();
+    }
+
+    private void initializeScanCollections(ScanResult scan) {
+        if (scan.getOpenPorts() != null) {
+            scan.getOpenPorts().size();
+        }
+        if (scan.getServices() != null) {
+            scan.getServices().size();
+        }
     }
 
     private record ProbeResult(
