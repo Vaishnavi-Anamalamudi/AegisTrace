@@ -186,8 +186,15 @@ public class ScanService {
     private ProbeResult scanWithNmap(String target) throws IOException, InterruptedException {
         Process process = new ProcessBuilder(
                 "nmap",
+                "-T4",
                 "-sV",
+                "--version-light",
                 "-O",
+                "--osscan-limit",
+                "--max-retries",
+                "1",
+                "--host-timeout",
+                "30s",
                 "--open",
                 "-oX",
                 "-",
@@ -196,11 +203,11 @@ public class ScanService {
                 .start();
 
         boolean finished = process.waitFor(45, TimeUnit.SECONDS);
-        String output = new String(process.getInputStream().readAllBytes());
         if (!finished) {
             process.destroyForcibly();
             throw new IOException("nmap timed out");
         }
+        String output = new String(process.getInputStream().readAllBytes());
         if (process.exitValue() != 0) {
             throw new IOException("nmap exited with code " + process.exitValue());
         }
