@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AegisTrace | Cyber Forensics Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/matrix.css" rel="stylesheet" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+<main class="public-page">
+    <section class="public-hero">
+        <nav class="public-nav" aria-label="Primary">
+            <a class="public-brand" href="/">
+                <span class="brand-mark">AT</span>
+                <span>AegisTrace</span>
+            </a>
+            <a class="public-login" href="/dashboard">
+                <i data-lucide="log-in"></i>
+                <span>Open Console</span>
+            </a>
+        </nav>
+
+        <div class="hero-grid">
+            <div class="hero-copy">
+                <p class="eyebrow">Final Year Cybersecurity Project</p>
+                <h1>AegisTrace</h1>
+                <p class="hero-lede">
+                    A working cyber forensics and attack reconstruction website for SOC-style event analysis,
+                    incident response, evidence tracking, and live exposure scanning.
+                </p>
+                <div class="hero-actions">
+                    <a class="primary-action" href="/dashboard">
+                        <i data-lucide="layout-dashboard"></i>
+                        <span>View Live Dashboard</span>
+                    </a>
+                    <span class="credential-note">Demo login: admin / ChangeMe123!</span>
+                </div>
+            </div>
+
+            <div class="hero-terminal" aria-label="AegisTrace project highlights">
+                <div class="terminal-top">
+                    <span></span><span></span><span></span>
+                    <strong>trace-session.log</strong>
+                </div>
+                <div class="terminal-lines">
+                    <p><b>ingest</b> security events, alerts, scans, and evidence records</p>
+                    <p><b>map</b> attacker behavior to MITRE ATT&CK tactics</p>
+                    <p><b>score</b> incident risk from correlated telemetry</p>
+                    <p><b>preserve</b> chain-of-custody details for forensic review</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="public-band">
+        <article>
+            <i data-lucide="shield-check"></i>
+            <h2>Security Operations Dashboard</h2>
+            <p>Charts, threat score, active alerts, event stream, and top correlated source for quick analyst review.</p>
+        </article>
+        <article>
+            <i data-lucide="workflow"></i>
+            <h2>Attack Reconstruction</h2>
+            <p>Incident reports connect event evidence, impact analysis, and recommended remediation steps.</p>
+        </article>
+        <article>
+            <i data-lucide="folder-lock"></i>
+            <h2>Forensics Evidence Vault</h2>
+            <p>Evidence records keep severity, source, summary, and chain-of-custody information in one place.</p>
+        </article>
+        <article>
+            <i data-lucide="radar"></i>
+            <h2>Exposure Scanner</h2>
+            <p>The dashboard can scan a domain or IP for common TCP services and save the result for reporting.</p>
+        </article>
+    </section>
+</main>
+<script>lucide.createIcons();</script>
+</body>
+</html>

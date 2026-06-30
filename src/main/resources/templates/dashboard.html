@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AegisTrace SOC Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/matrix.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+<canvas id="codeRain" aria-hidden="true"></canvas>
+<div class="app-shell">
+    <aside class="side-rail">
+        <div class="brand-mark">AT</div>
+        <a class="rail-btn active" href="/dashboard" title="Dashboard"><i data-lucide="layout-dashboard"></i></a>
+        <a class="rail-btn" href="/incidents" title="Incidents"><i data-lucide="siren"></i></a>
+        <a class="rail-btn" href="/evidence" title="Evidence"><i data-lucide="fingerprint"></i></a>
+        <a class="rail-btn" href="/threat-intel" title="Threat Intel"><i data-lucide="radar"></i></a>
+    </aside>
+
+    <main class="workspace">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">AegisTrace Matrix Operations</p>
+                <h1>Trace Console</h1>
+            </div>
+            <div class="status-cluster">
+                <span class="status-pill" th:classappend="${threatLevel == 'Critical' ? ' danger' : (threatLevel == 'High' ? ' warning' : ' stable')}">
+                    <i data-lucide="shield-alert"></i>
+                    <span th:text="${threatLevel}">Medium</span>
+                </span>
+                <span class="status-pill muted">
+                    <i data-lucide="binary"></i>
+                    Live Feed
+                </span>
+            </div>
+        </header>
+
+        <section class="trace-search">
+            <div>
+                <span class="section-kicker">Manual Trace</span>
+                <h2>Search and scan a real address</h2>
+            </div>
+            <form class="scan-form" id="scanForm">
+                <div class="scan-input-wrap">
+                    <input id="scanTarget" name="target" type="text" autocomplete="off" placeholder="Enter IP address or domain" required />
+                    <button type="submit">
+                        <i data-lucide="radar"></i>
+                        <span>Scan</span>
+                    </button>
+                </div>
+                <small id="scanMessage">Type an IP or domain, then scan common TCP ports from this machine.</small>
+            </form>
+            <div class="scan-result" id="scanResult" hidden></div>
+        </section>
+
+        <section class="command-band">
+            <div>
+                <span class="section-kicker">Active case posture</span>
+                <h2 th:text="${topSource}">n/a</h2>
+                <p>Top correlated source moving through the trace grid.</p>
+            </div>
+            <div class="command-metrics">
+                <div>
+                    <strong th:text="${correlatedSources}">0</strong>
+                    <span>Correlated sources</span>
+                </div>
+                <div>
+                    <strong th:text="${unresolvedAlerts}">0</strong>
+                    <span>Open alerts</span>
+                </div>
+                <div>
+                    <strong th:text="${escalatedEvents}">0</strong>
+                    <span>Escalations</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="metric-grid">
+            <article class="metric-card">
+                <div class="metric-icon teal"><i data-lucide="activity"></i></div>
+                <span>Total Events</span>
+                <strong id="totalEvents" th:text="${totalEvents}">0</strong>
+                <small>security_events table</small>
+            </article>
+            <article class="metric-card">
+                <div class="metric-icon amber"><i data-lucide="gauge"></i></div>
+                <span>Threat Score</span>
+                <strong id="threatScore" th:data-value="${threatScore}" th:text="${threatScore}">0</strong>
+                <small>average event risk</small>
+            </article>
+            <article class="metric-card">
+                <div class="metric-icon red"><i data-lucide="flame"></i></div>
+                <span>Critical Events</span>
+                <strong id="criticalEvents" th:text="${criticalEvents}">0</strong>
+                <small th:text="${highEvents + ' high severity'}">0 high severity</small>
+            </article>
+            <article class="metric-card">
+                <div class="metric-icon blue"><i data-lucide="scan-line"></i></div>
+                <span>Exposure Findings</span>
+                <strong th:text="${vulnCount}">0</strong>
+                <small th:text="${activeScans + ' completed scans'}">0 completed scans</small>
+            </article>
+        </section>
+
+        <section class="analysis-grid">
+            <article class="panel panel-large">
+                <div class="panel-heading">
+                    <div>
+                        <span class="section-kicker">Telemetry</span>
+                        <h3>Event Volume by Phase</h3>
+                    </div>
+                    <i data-lucide="line-chart"></i>
+                </div>
+                <canvas id="trafficChart" height="138"></canvas>
+            </article>
+
+            <article class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <span class="section-kicker">Risk</span>
+                        <h3>Severity Mix</h3>
+                    </div>
+                    <i data-lucide="pie-chart"></i>
+                </div>
+                <canvas id="riskChart" height="180"></canvas>
+            </article>
+
+            <article class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <span class="section-kicker">MITRE ATT&CK</span>
+                        <h3>Tactic Coverage</h3>
+                    </div>
+                    <i data-lucide="network"></i>
+                </div>
+                <div class="tactic-list">
+                    <div class="tactic-row" th:each="tactic : ${tacticCounts}">
+                        <span th:text="${tactic.key}">Reconnaissance</span>
+                        <div class="bar"><span th:style="'width:' + ${tactic.value * 12} + '%'"></span></div>
+                        <strong th:text="${tactic.value}">0</strong>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <section class="ops-grid">
+            <article class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <span class="section-kicker">Alert Queue</span>
+                        <h3>Analyst Triage</h3>
+                    </div>
+                    <i data-lucide="bell-ring"></i>
+                </div>
+                <div class="stack-list">
+                    <div class="queue-item" th:each="alert : ${alerts}">
+                        <span class="severity-dot" th:classappend="${alert.severity == 'CRITICAL' ? ' critical' : (alert.severity == 'HIGH' ? ' high' : ' medium')}"></span>
+                        <div>
+                            <strong th:text="${alert.alertType}">CORRELATED_INTRUSION</strong>
+                            <p th:text="${alert.detail}">Correlation rule matched.</p>
+                        </div>
+                        <small th:text="${alert.severity}">HIGH</small>
+                    </div>
+                </div>
+            </article>
+
+            <article class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <span class="section-kicker">Case Workbench</span>
+                        <h3>Incident Reconstructions</h3>
+                    </div>
+                    <i data-lucide="workflow"></i>
+                </div>
+                <div class="stack-list">
+                    <div class="case-item" th:each="incident : ${incidentList}">
+                        <strong th:text="${incident.title}">Incident Title</strong>
+                        <p th:text="${incident.summary}">Incident summary</p>
+                        <span th:text="${incident.riskScore + ' risk'}">0 risk</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <span class="section-kicker">Evidence Vault</span>
+                        <h3>Chain of Custody</h3>
+                    </div>
+                    <i data-lucide="folder-lock"></i>
+                </div>
+                <div class="stack-list">
+                    <div class="evidence-item" th:each="record : ${forensicsList}">
+                        <strong th:text="${record.evidenceId}">EVID-0001</strong>
+                        <p th:text="${record.summary}">Evidence summary</p>
+                        <span th:text="${record.severity}">HIGH</span>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <section class="ops-grid lower">
+            <article class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <span class="section-kicker">Attack Surface</span>
+                        <h3>Exposure Scans</h3>
+                    </div>
+                    <i data-lucide="server-cog"></i>
+                </div>
+                <div class="scan-table" id="scanTable">
+                    <div class="scan-row" th:each="scan : ${scanList}">
+                        <div>
+                            <strong th:text="${scan.target}">target</strong>
+                            <span th:text="${scan.domain}">resolved address</span>
+                        </div>
+                        <small th:text="${scan.osFingerprint}">Linux</small>
+                        <b th:text="${scan.riskScore}">0</b>
+                    </div>
+                </div>
+            </article>
+
+            <article class="panel event-panel">
+                <div class="panel-heading">
+                    <div>
+                        <span class="section-kicker">Database Logs</span>
+                        <h3>Live Security Event Stream</h3>
+                    </div>
+                    <i data-lucide="terminal-square"></i>
+                </div>
+                <div class="table-responsive">
+                    <table class="event-table">
+                        <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Type</th>
+                            <th>Source</th>
+                            <th>Destination</th>
+                            <th>MITRE</th>
+                            <th>Severity</th>
+                            <th>Risk</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="event : ${latestEvents}" th:data-severity="${event.severity}" th:data-type="${event.eventType}">
+                            <td th:text="${event.timestamp}">2026-06-16T12:00</td>
+                            <td>
+                                <strong th:text="${event.eventType}">AUTH_FAIL</strong>
+                                <span th:text="${event.description}">Description</span>
+                            </td>
+                            <td th:text="${event.sourceIP}">source</td>
+                            <td th:text="${event.destinationIP}">destination</td>
+                            <td th:text="${event.mitreTactic}">Initial Access</td>
+                            <td>
+                                <span class="severity-label" th:classappend="${event.severity == 'CRITICAL' ? ' critical' : (event.severity == 'HIGH' ? ' high' : ' medium')}" th:text="${event.severity}">HIGH</span>
+                            </td>
+                            <td th:text="${event.riskScore}">75</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </section>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>
