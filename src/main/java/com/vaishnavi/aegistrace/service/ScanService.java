@@ -189,8 +189,6 @@ public class ScanService {
                 "-T4",
                 "-sV",
                 "--version-light",
-                "-O",
-                "--osscan-limit",
                 "--max-retries",
                 "1",
                 "--host-timeout",

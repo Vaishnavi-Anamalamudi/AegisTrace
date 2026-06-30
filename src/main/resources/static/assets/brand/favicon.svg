@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AegisTrace">
+  <rect width="64" height="64" rx="12" fill="#020503"/>
+  <path d="M32 8l19 8v14c0 12.5-7.7 21.9-19 26-11.3-4.1-19-13.5-19-26V16l19-8z" fill="#061009" stroke="#00ff88" stroke-width="3"/>
+  <path d="M22 42l10-24 10 24h-6l-1.8-5h-8.4L24 42h-2zm5.6-10h8.8L32 20.6 27.6 32z" fill="#e7ffe9"/>
+</svg>

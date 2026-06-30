@@ -23,8 +23,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const submitButton = scanForm.querySelector('button');
             submitButton.disabled = true;
+            submitButton.classList.add('button-loading');
             scanMessage.textContent = `Scanning ${target}...`;
             scanResult.hidden = true;
+            scanResult.classList.remove('error');
 
             try {
                 const response = await fetch('/api/scans/run', {
@@ -52,11 +54,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 scanResult.hidden = false;
                 scanMessage.textContent = 'Scan completed and saved.';
                 prependScanRow(scanTable, scan);
+                showToast(`Scan completed for ${scan.target || target}.`);
                 scanTarget.value = '';
             } catch (error) {
                 scanMessage.textContent = error.message || 'Scan failed.';
+                scanResult.innerHTML = `
+                    <strong>Scan could not be completed</strong>
+                    <span>${escapeHtml(error.message || 'Review authorization and target format, then try again.')}</span>
+                `;
+                scanResult.classList.add('error');
+                scanResult.hidden = false;
+                showToast(error.message || 'Scan failed.', 'error');
             } finally {
                 submitButton.disabled = false;
+                submitButton.classList.remove('button-loading');
                 if (window.lucide) {
                     window.lucide.createIcons();
                 }
@@ -68,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const threatScoreEl = document.getElementById('threatScore');
     const riskValue = threatScoreEl ? Number(threatScoreEl.dataset.value || 0) : 0;
-    const rows = Array.from(document.querySelectorAll('.event-table tbody tr'));
+    const rows = Array.from(document.querySelectorAll('.event-table tbody tr[data-type]'));
 
     const severityCounts = rows.reduce((acc, row) => {
         const severity = row.dataset.severity || 'UNKNOWN';
@@ -82,22 +93,28 @@ document.addEventListener('DOMContentLoaded', function () {
         return acc;
     }, {});
 
+    if (!window.Chart) {
+        return;
+    }
+
     Chart.defaults.color = '#86b990';
     Chart.defaults.borderColor = 'rgba(115, 255, 151, 0.16)';
     Chart.defaults.font.family = 'Consolas, Cascadia Mono, monospace';
 
     const riskCanvas = document.getElementById('riskChart');
-    if (riskCanvas && window.Chart) {
+    if (riskCanvas) {
+        const riskData = [
+            severityCounts.CRITICAL || 0,
+            severityCounts.HIGH || 0,
+            (severityCounts.MEDIUM || 0) + (severityCounts.LOW || 0)
+        ];
+
         new Chart(riskCanvas.getContext('2d'), {
             type: 'doughnut',
             data: {
                 labels: ['Critical', 'High', 'Medium / Low'],
                 datasets: [{
-                    data: [
-                        severityCounts.CRITICAL || 0,
-                        severityCounts.HIGH || 0,
-                        (severityCounts.MEDIUM || 0) + (severityCounts.LOW || 0)
-                    ],
+                    data: riskData.some(Boolean) ? riskData : [1, 0, 0],
                     backgroundColor: ['#ff4f64', '#c9ff5f', '#00ff88'],
                     borderWidth: 0
                 }]
@@ -120,18 +137,19 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const trafficCanvas = document.getElementById('trafficChart');
-    if (trafficCanvas && window.Chart) {
+    if (trafficCanvas) {
         const labels = Object.keys(typeCounts).slice(0, 8);
-        const values = labels.map(label => typeCounts[label]);
+        const chartLabels = labels.length ? labels : ['No telemetry'];
+        const values = labels.length ? labels.map(label => typeCounts[label]) : [0];
 
         new Chart(trafficCanvas.getContext('2d'), {
             type: 'bar',
             data: {
-                labels,
+                labels: chartLabels,
                 datasets: [{
                     label: 'Events',
                     data: values,
-                    backgroundColor: labels.map((_, index) => index % 3 === 0 ? '#00ff88' : (index % 3 === 1 ? '#c9ff5f' : '#7cffc4')),
+                    backgroundColor: chartLabels.map((_, index) => index % 3 === 0 ? '#00ff88' : (index % 3 === 1 ? '#c9ff5f' : '#7cffc4')),
                     borderRadius: 6,
                     maxBarThickness: 44
                 }]
@@ -188,7 +206,10 @@ function connectEventStream() {
         client.subscribe('/topic/security-events', function (message) {
             const event = JSON.parse(message.body);
             prependEventRow(eventTableBody, event);
+            showToast(`${event.severity || 'New'} event: ${event.eventType || 'security event'}`);
         });
+    }, function () {
+        showToast('Live event stream is unavailable. The dashboard will keep showing stored data.', 'error');
     });
 }
 
@@ -222,7 +243,7 @@ function startCodeRain() {
     }
 
     const context = canvas.getContext('2d');
-    const glyphs = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ';
+    const glyphs = '010011101101001011010011AEGISTRACETHREATFORENSICS';
     const fontSize = 16;
     let columns = 0;
     let drops = [];
@@ -261,6 +282,11 @@ function startCodeRain() {
 }
 
 function prependScanRow(scanTable, scan) {
+    const emptyState = scanTable.querySelector('.empty-state');
+    if (emptyState) {
+        emptyState.remove();
+    }
+
     const row = document.createElement('div');
     row.className = 'scan-row';
     row.innerHTML = `
@@ -272,6 +298,28 @@ function prependScanRow(scanTable, scan) {
         <b>${Number(scan.riskScore || 0).toFixed(1)}</b>
     `;
     scanTable.prepend(row);
+}
+
+function showToast(message, tone) {
+    let stack = document.querySelector('.toast-stack');
+    if (!stack) {
+        stack = document.createElement('div');
+        stack.className = 'toast-stack';
+        stack.setAttribute('aria-live', 'polite');
+        document.body.appendChild(stack);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `trace-toast${tone === 'error' ? ' error' : ''}`;
+    toast.textContent = message;
+    stack.appendChild(toast);
+
+    window.setTimeout(() => {
+        toast.remove();
+        if (!stack.children.length) {
+            stack.remove();
+        }
+    }, 4200);
 }
 
 function escapeHtml(value) {

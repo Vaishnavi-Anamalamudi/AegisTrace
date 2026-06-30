@@ -28,8 +28,9 @@ public class ThreatIntelController {
 
     @GetMapping("/ip/{ip}")
     public ResponseEntity<ThreatIntel> byIp(@PathVariable String ip) {
-        ThreatIntel t = service.findByIp(ip);
-        return t == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(t);
+        return service.findByIp(ip)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping

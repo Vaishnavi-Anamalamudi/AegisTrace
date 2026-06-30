@@ -1,4 +1,4 @@
- package com.vaishnavi.aegistrace.entity;
+package com.vaishnavi.aegistrace.entity;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;

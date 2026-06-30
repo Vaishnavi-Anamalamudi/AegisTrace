@@ -1,6 +1,7 @@
 package com.vaishnavi.aegistrace.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,10 @@ public class ThreatIntelService {
         return repository.findAll();
     }
 
-    public ThreatIntel findByIp(String ip) {
-        return repository.findAll().stream().filter(r -> ip.equals(r.getIpAddress())).findFirst().orElse(null);
+    public Optional<ThreatIntel> findByIp(String ip) {
+        if (ip == null || ip.isBlank()) {
+            return Optional.empty();
+        }
+        return repository.findFirstByIpAddressIgnoreCase(ip.trim());
     }
 }

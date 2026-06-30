@@ -1,0 +1,13 @@
+<svg width="720" height="180" viewBox="0 0 720 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AegisTrace logo</title>
+  <desc id="desc">Shield and trace-line logo for the AegisTrace cybersecurity platform.</desc>
+  <rect width="720" height="180" rx="24" fill="#071311"/>
+  <path d="M78 38L137 60V96C137 122 121 146 78 160C35 146 19 122 19 96V60L78 38Z" fill="#0B1F1A" stroke="#00E676" stroke-width="5"/>
+  <path d="M53 96H70L79 73L96 122L106 96H123" stroke="#9CFFCB" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="53" cy="96" r="6" fill="#00E676"/>
+  <circle cx="123" cy="96" r="6" fill="#00E676"/>
+  <text x="176" y="86" fill="#E8FFF3" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="46" font-weight="800">AegisTrace</text>
+  <text x="178" y="126" fill="#7BE6A7" font-family="JetBrains Mono, Consolas, monospace" font-size="18" font-weight="600">Threat Detection + Forensics + Response</text>
+  <path d="M178 145H616" stroke="#123D31" stroke-width="2"/>
+  <path d="M178 145H366" stroke="#00E676" stroke-width="2"/>
+</svg>

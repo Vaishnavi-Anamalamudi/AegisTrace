@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/OWNER/AegisTrace/security/advisories/new
+    about: Report vulnerabilities privately. Replace OWNER after publication.
+  - name: Responsible scanning policy
+    url: https://nmap.org/book/legal-issues.html
+    about: Review authorization and legal considerations before network scanning.

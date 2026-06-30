@@ -3,21 +3,25 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="AegisTrace evidence vault for digital forensics records and chain-of-custody review." />
+    <meta name="theme-color" content="#020503" />
     <title>AegisTrace Evidence</title>
+    <link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/css/matrix.css" rel="stylesheet" />
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to evidence</a>
 <div class="app-shell">
-    <aside class="side-rail">
-        <div class="brand-mark">AT</div>
+    <aside class="side-rail" aria-label="Primary navigation">
+        <a class="brand-mark" href="/" aria-label="AegisTrace home">AT</a>
         <a class="rail-btn" href="/dashboard" title="Dashboard"><i data-lucide="layout-dashboard"></i></a>
         <a class="rail-btn" href="/incidents" title="Incidents"><i data-lucide="siren"></i></a>
         <a class="rail-btn active" href="/evidence" title="Evidence"><i data-lucide="fingerprint"></i></a>
         <a class="rail-btn" href="/threat-intel" title="Threat Intel"><i data-lucide="radar"></i></a>
     </aside>
-    <main class="workspace">
+    <main class="workspace" id="main-content">
         <header class="topbar">
             <div>
                 <p class="eyebrow">Digital Forensics</p>
@@ -27,6 +31,11 @@
         </header>
 
         <section class="module-grid">
+            <article class="panel empty-state" th:if="${#lists.isEmpty(records)}">
+                <i data-lucide="folder-lock"></i>
+                <strong>No preserved evidence yet</strong>
+                <span>Forensics records created through the API will appear here with severity, source, and custody trail.</span>
+            </article>
             <article class="panel module-card" th:each="record : ${records}">
                 <div class="panel-heading">
                     <div>

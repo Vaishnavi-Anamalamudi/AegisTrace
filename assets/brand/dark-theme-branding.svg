@@ -1,0 +1,14 @@
+<svg width="960" height="420" viewBox="0 0 960 420" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AegisTrace dark theme branding</title>
+  <desc id="desc">Dark theme reference panel for AegisTrace.</desc>
+  <rect width="960" height="420" fill="#071311"/>
+  <rect x="42" y="42" width="876" height="336" rx="18" fill="#0B1F1A" stroke="#123D31"/>
+  <text x="80" y="110" fill="#E8FFF3" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="46" font-weight="850">Dark SOC Theme</text>
+  <text x="82" y="154" fill="#7BE6A7" font-family="JetBrains Mono, Consolas, monospace" font-size="19" font-weight="700">Signal-rich. Low glare. Operational.</text>
+  <rect x="82" y="208" width="110" height="110" rx="10" fill="#071311" stroke="#123D31"/>
+  <rect x="222" y="208" width="110" height="110" rx="10" fill="#0B1F1A" stroke="#123D31"/>
+  <rect x="362" y="208" width="110" height="110" rx="10" fill="#00E676"/>
+  <rect x="502" y="208" width="110" height="110" rx="10" fill="#1DE9B6"/>
+  <rect x="642" y="208" width="110" height="110" rx="10" fill="#EF4444"/>
+  <rect x="782" y="208" width="80" height="110" rx="10" fill="#F59E0B"/>
+</svg>

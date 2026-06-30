@@ -1,33 +1,55 @@
-# Deployment Guide
+# Deployment
+
+This guide covers local, Docker Compose, and production-oriented deployment expectations.
 
 ## Docker Compose
 
-1. Copy `.env.example` to `.env`.
-2. Change the database passwords.
-3. Run:
-
 ```bash
+cp .env.example .env
 docker compose up --build
 ```
 
-Open `http://localhost:8084`.
+Open `http://localhost:8084` after the app and MySQL containers are healthy.
 
-## Local MySQL
-
-Set these environment variables or edit local run configuration:
-
-```text
-DB_URL=jdbc:mysql://localhost:3306/aegistrace_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
-DB_USERNAME=root
-DB_PASSWORD=your-password
-```
-
-Then run:
+## Local JVM
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-## Nmap
+Windows:
 
-The scanner uses Nmap when available. If Nmap is not installed or exits unsuccessfully, AegisTrace falls back to a common TCP port probe and still persists the scan result.
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+Set `DB_URL`, `DB_USERNAME`, and `DB_PASSWORD` before starting the app.
+
+## Production Checklist
+
+- Terminate TLS at a reverse proxy or ingress.
+- Replace development credentials.
+- Use a dedicated database principal with least privilege.
+- Use managed secrets instead of checked-in configuration.
+- Disable or isolate seed/demo data.
+- Set `JPA_DDL_AUTO=validate`.
+- Restrict actuator exposure.
+- Add centralized logging and metrics.
+- Ensure all scanning targets are authorized.
+- Capture release artifact checksums.
+
+## Environment Variables
+
+| Variable | Required | Notes |
+| --- | --- | --- |
+| `DB_URL` | Yes | JDBC URL for MySQL |
+| `DB_USERNAME` | Yes | Database user |
+| `DB_PASSWORD` | Yes | Database password |
+| `JPA_DDL_AUTO` | Recommended | Use `validate` outside development |
+| `NMAP_ENABLED` | Optional | Set `false` where scanner execution is not allowed |
+
+## Health Check
+
+```text
+GET /actuator/health
+```

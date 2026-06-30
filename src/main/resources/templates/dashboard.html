@@ -3,24 +3,28 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="AegisTrace SOC dashboard for live threat detection, exposure scanning, incident response, and evidence review." />
+    <meta name="theme-color" content="#020503" />
     <title>AegisTrace SOC Dashboard</title>
+    <link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/css/matrix.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to dashboard</a>
 <canvas id="codeRain" aria-hidden="true"></canvas>
 <div class="app-shell">
-    <aside class="side-rail">
-        <div class="brand-mark">AT</div>
+    <aside class="side-rail" aria-label="Primary navigation">
+        <a class="brand-mark" href="/" aria-label="AegisTrace home">AT</a>
         <a class="rail-btn active" href="/dashboard" title="Dashboard"><i data-lucide="layout-dashboard"></i></a>
         <a class="rail-btn" href="/incidents" title="Incidents"><i data-lucide="siren"></i></a>
         <a class="rail-btn" href="/evidence" title="Evidence"><i data-lucide="fingerprint"></i></a>
         <a class="rail-btn" href="/threat-intel" title="Threat Intel"><i data-lucide="radar"></i></a>
     </aside>
 
-    <main class="workspace">
+    <main class="workspace" id="main-content">
         <header class="topbar">
             <div>
                 <p class="eyebrow">AegisTrace Matrix Operations</p>
@@ -48,10 +52,10 @@
                     <input id="scanTarget" name="target" type="text" autocomplete="off" placeholder="Enter IP address or domain" required />
                     <button type="submit">
                         <i data-lucide="radar"></i>
-                        <span>Scan</span>
-                    </button>
-                </div>
-                <small id="scanMessage">Type an IP or domain, then scan common TCP ports from this machine.</small>
+                    <span class="button-label">Scan</span>
+                </button>
+            </div>
+            <small id="scanMessage">Type an IP or domain, then scan common TCP ports from this machine.</small>
             </form>
             <div class="scan-result" id="scanResult" hidden></div>
         </section>
@@ -137,6 +141,11 @@
                     <i data-lucide="network"></i>
                 </div>
                 <div class="tactic-list">
+                    <div class="empty-state compact" th:if="${#maps.isEmpty(tacticCounts)}">
+                        <i data-lucide="network"></i>
+                        <strong>No mapped tactics yet</strong>
+                        <span>Ingest events with MITRE context to populate tactic coverage.</span>
+                    </div>
                     <div class="tactic-row" th:each="tactic : ${tacticCounts}">
                         <span th:text="${tactic.key}">Reconnaissance</span>
                         <div class="bar"><span th:style="'width:' + ${tactic.value * 12} + '%'"></span></div>
@@ -156,6 +165,11 @@
                     <i data-lucide="bell-ring"></i>
                 </div>
                 <div class="stack-list">
+                    <div class="empty-state compact" th:if="${#lists.isEmpty(alerts)}">
+                        <i data-lucide="bell-off"></i>
+                        <strong>No open alert activity</strong>
+                        <span>Correlated detections will appear here when the queue is populated.</span>
+                    </div>
                     <div class="queue-item" th:each="alert : ${alerts}">
                         <span class="severity-dot" th:classappend="${alert.severity == 'CRITICAL' ? ' critical' : (alert.severity == 'HIGH' ? ' high' : ' medium')}"></span>
                         <div>
@@ -176,6 +190,11 @@
                     <i data-lucide="workflow"></i>
                 </div>
                 <div class="stack-list">
+                    <div class="empty-state compact" th:if="${#lists.isEmpty(incidentList)}">
+                        <i data-lucide="clipboard-list"></i>
+                        <strong>No incident reconstructions</strong>
+                        <span>Create incident reports to track impact and remediation.</span>
+                    </div>
                     <div class="case-item" th:each="incident : ${incidentList}">
                         <strong th:text="${incident.title}">Incident Title</strong>
                         <p th:text="${incident.summary}">Incident summary</p>
@@ -193,6 +212,11 @@
                     <i data-lucide="folder-lock"></i>
                 </div>
                 <div class="stack-list">
+                    <div class="empty-state compact" th:if="${#lists.isEmpty(forensicsList)}">
+                        <i data-lucide="folder-lock"></i>
+                        <strong>No evidence in custody</strong>
+                        <span>Forensic records will appear after collection and preservation.</span>
+                    </div>
                     <div class="evidence-item" th:each="record : ${forensicsList}">
                         <strong th:text="${record.evidenceId}">EVID-0001</strong>
                         <p th:text="${record.summary}">Evidence summary</p>
@@ -212,6 +236,11 @@
                     <i data-lucide="server-cog"></i>
                 </div>
                 <div class="scan-table" id="scanTable">
+                    <div class="empty-state compact" th:if="${#lists.isEmpty(scanList)}">
+                        <i data-lucide="scan-search"></i>
+                        <strong>No scan history</strong>
+                        <span>Run an authorized scan to persist exposure results.</span>
+                    </div>
                     <div class="scan-row" th:each="scan : ${scanList}">
                         <div>
                             <strong th:text="${scan.target}">target</strong>
@@ -245,6 +274,15 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <tr th:if="${#lists.isEmpty(latestEvents)}">
+                            <td colspan="7">
+                                <div class="empty-state table-empty">
+                                    <i data-lucide="terminal"></i>
+                                    <strong>No event telemetry yet</strong>
+                                    <span>Security events ingested through the API will stream into this table.</span>
+                                </div>
+                            </td>
+                        </tr>
                         <tr th:each="event : ${latestEvents}" th:data-severity="${event.severity}" th:data-type="${event.eventType}">
                             <td th:text="${event.timestamp}">2026-06-16T12:00</td>
                             <td>

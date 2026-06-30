@@ -1,0 +1,10 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AegisTrace cybersecurity icon</title>
+  <desc id="desc">A green shield with telemetry trace lines.</desc>
+  <rect width="256" height="256" rx="56" fill="#071311"/>
+  <path d="M128 28L210 60V115C210 166 178 210 128 232C78 210 46 166 46 115V60L128 28Z" fill="#0B1F1A" stroke="#00E676" stroke-width="8"/>
+  <path d="M76 128H103L119 88L144 174L159 128H180" stroke="#9CFFCB" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="76" cy="128" r="9" fill="#00E676"/>
+  <circle cx="180" cy="128" r="9" fill="#00E676"/>
+  <path d="M93 63C105 56 116 53 128 53C140 53 151 56 163 63" stroke="#1DE9B6" stroke-width="5" stroke-linecap="round"/>
+</svg>

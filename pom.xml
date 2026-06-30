@@ -18,7 +18,7 @@
     <version>1.0.0</version>
 
     <name>AegisTrace</name>
-    <description>AI-Powered Cyber Forensics and Attack Reconstruction Platform</description>
+    <description>Enterprise-grade SOC platform for threat detection, network scanning, digital forensics, evidence management, and incident response built using Spring Boot.</description>
 
     <properties>
         <java.version>17</java.version>

@@ -1,0 +1,18 @@
+<svg width="960" height="360" viewBox="0 0 960 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AegisTrace color palette</title>
+  <desc id="desc">Official color palette for AegisTrace.</desc>
+  <rect width="960" height="360" fill="#071311"/>
+  <text x="42" y="66" fill="#E8FFF3" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="34" font-weight="800">AegisTrace Palette</text>
+  <g font-family="JetBrains Mono, Consolas, monospace" font-size="15" font-weight="700">
+    <rect x="42" y="110" width="130" height="130" rx="12" fill="#071311" stroke="#24483D"/>
+    <text x="42" y="272" fill="#E8FFF3">Void #071311</text>
+    <rect x="204" y="110" width="130" height="130" rx="12" fill="#0B1F1A" stroke="#24483D"/>
+    <text x="204" y="272" fill="#E8FFF3">Panel #0B1F1A</text>
+    <rect x="366" y="110" width="130" height="130" rx="12" fill="#123D31"/>
+    <text x="366" y="272" fill="#E8FFF3">Border #123D31</text>
+    <rect x="528" y="110" width="130" height="130" rx="12" fill="#00E676"/>
+    <text x="528" y="272" fill="#E8FFF3">Aegis #00E676</text>
+    <rect x="690" y="110" width="130" height="130" rx="12" fill="#1DE9B6"/>
+    <text x="690" y="272" fill="#E8FFF3">Trace #1DE9B6</text>
+  </g>
+</svg>

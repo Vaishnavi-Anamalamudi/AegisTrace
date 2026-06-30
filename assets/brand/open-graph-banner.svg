@@ -1,0 +1,16 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AegisTrace Open Graph banner</title>
+  <desc id="desc">Social preview banner for AegisTrace.</desc>
+  <rect width="1200" height="630" fill="#071311"/>
+  <circle cx="1035" cy="88" r="220" fill="#0B1F1A"/>
+  <path d="M0 468C164 399 317 500 509 442C696 385 745 211 955 242C1078 260 1144 326 1200 309V630H0V468Z" fill="#0B1F1A"/>
+  <g opacity=".2" stroke="#00E676">
+    <path d="M80 0V630M200 0V630M320 0V630M440 0V630M560 0V630M680 0V630M800 0V630M920 0V630M1040 0V630M1160 0V630"/>
+    <path d="M0 90H1200M0 180H1200M0 270H1200M0 360H1200M0 450H1200M0 540H1200"/>
+  </g>
+  <path d="M180 126L302 172V250C302 324 254 388 180 421C106 388 58 324 58 250V172L180 126Z" fill="#0B1F1A" stroke="#00E676" stroke-width="10"/>
+  <path d="M101 266H145L174 184L219 348L243 266H281" stroke="#9CFFCB" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="380" y="245" fill="#E8FFF3" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="86" font-weight="850">AegisTrace</text>
+  <text x="386" y="316" fill="#7BE6A7" font-family="JetBrains Mono, Consolas, monospace" font-size="31" font-weight="700">Threat Detection + Forensics + Response</text>
+  <text x="386" y="380" fill="#C7F8DA" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28">Enterprise-grade SOC platform built with Spring Boot.</text>
+</svg>

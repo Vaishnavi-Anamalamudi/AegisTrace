@@ -1,0 +1,17 @@
+<svg width="1280" height="360" viewBox="0 0 1280 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AegisTrace repository banner</title>
+  <desc id="desc">Dark cybersecurity banner with green telemetry grid and AegisTrace wordmark.</desc>
+  <rect width="1280" height="360" fill="#071311"/>
+  <path d="M0 295C188 238 335 323 519 275C688 231 766 101 949 118C1089 131 1188 202 1280 179V360H0V295Z" fill="#0B1F1A"/>
+  <g opacity=".22" stroke="#00E676" stroke-width="1">
+    <path d="M0 60H1280M0 120H1280M0 180H1280M0 240H1280M0 300H1280"/>
+    <path d="M80 0V360M160 0V360M240 0V360M320 0V360M400 0V360M480 0V360M560 0V360M640 0V360M720 0V360M800 0V360M880 0V360M960 0V360M1040 0V360M1120 0V360M1200 0V360"/>
+  </g>
+  <path d="M147 67L236 101V156C236 212 201 260 147 284C93 260 58 212 58 156V101L147 67Z" fill="#0B1F1A" stroke="#00E676" stroke-width="8"/>
+  <path d="M91 168H122L143 112L175 230L192 168H218" stroke="#9CFFCB" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="294" y="148" fill="#E8FFF3" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="72" font-weight="850">AegisTrace</text>
+  <text x="299" y="202" fill="#7BE6A7" font-family="JetBrains Mono, Consolas, monospace" font-size="25" font-weight="700">Enterprise Cybersecurity Threat Detection</text>
+  <text x="301" y="246" fill="#B8F7D2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="25" font-weight="500">Network scanning, digital forensics, evidence management, and incident response.</text>
+  <path d="M300 282H1006" stroke="#123D31" stroke-width="3"/>
+  <path d="M300 282H578" stroke="#00E676" stroke-width="3"/>
+</svg>

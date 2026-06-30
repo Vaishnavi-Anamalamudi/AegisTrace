@@ -1,0 +1,13 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AegisTrace social preview</title>
+  <desc id="desc">Wide social preview for repository cards and posts.</desc>
+  <rect width="1200" height="675" fill="#071311"/>
+  <rect x="54" y="54" width="1092" height="567" rx="28" fill="#0B1F1A" stroke="#123D31" stroke-width="2"/>
+  <path d="M166 146L288 192V270C288 344 240 408 166 441C92 408 44 344 44 270V192L166 146Z" transform="translate(70 30)" fill="#071311" stroke="#00E676" stroke-width="10"/>
+  <path d="M174 316H218L247 234L292 398L316 316H354" stroke="#9CFFCB" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="430" y="275" fill="#E8FFF3" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="80" font-weight="850">AegisTrace</text>
+  <text x="435" y="342" fill="#7BE6A7" font-family="JetBrains Mono, Consolas, monospace" font-size="30" font-weight="700">Enterprise Cybersecurity Platform</text>
+  <text x="437" y="406" fill="#C7F8DA" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="27">Threat detection, scanning, evidence, and incident response.</text>
+  <path d="M438 460H1000" stroke="#123D31" stroke-width="4"/>
+  <path d="M438 460H704" stroke="#00E676" stroke-width="4"/>
+</svg>

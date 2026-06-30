@@ -1,0 +1,7 @@
+# Replace @Vaishnavi with the canonical maintainer handle after publishing.
+* @Vaishnavi
+
+/src/main/java/com/vaishnavi/aegistrace/security/ @Vaishnavi
+/src/main/java/com/vaishnavi/aegistrace/config/ @Vaishnavi
+/docs/ @Vaishnavi
+/.github/ @Vaishnavi

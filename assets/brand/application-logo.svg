@@ -1,0 +1,9 @@
+<svg width="420" height="96" viewBox="0 0 420 96" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AegisTrace application logo</title>
+  <desc id="desc">Compact application logo for navbar and application chrome.</desc>
+  <rect width="420" height="96" rx="16" fill="#071311"/>
+  <path d="M48 16L82 29V51C82 72 69 87 48 94C27 87 14 72 14 51V29L48 16Z" fill="#0B1F1A" stroke="#00E676" stroke-width="4"/>
+  <path d="M29 52H41L48 34L58 71L64 52H74" stroke="#9CFFCB" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="104" y="44" fill="#E8FFF3" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28" font-weight="800">AegisTrace</text>
+  <text x="106" y="68" fill="#7BE6A7" font-family="JetBrains Mono, Consolas, monospace" font-size="13" font-weight="600">SOC Operations Platform</text>
+</svg>
