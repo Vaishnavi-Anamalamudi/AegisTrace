@@ -72,6 +72,7 @@ Then open `http://localhost:8084/`.
 | Method | Endpoint | Purpose |
 | --- | --- | --- |
 | `POST` | `/api/auth/login` | Generate JWT token |
+| `POST` | `/api/auth/register` | Create a validated user as an Administrator |
 | `POST` | `/api/scans/run` | Run a scan as Admin or Analyst |
 | `GET` | `/api/scans?q=value` | Search scan history |
 | `DELETE` | `/api/scans/{id}` | Delete scan as Admin |
@@ -100,6 +101,9 @@ The application uses MySQL in development and Docker. The current ER diagram is 
 ## Security Notes
 
 - Passwords are hashed with BCrypt.
+- Login and user creation use validated DTOs; persistence entities and password hashes are never returned by the authentication API.
+- Only administrators can create users or assign the supported Admin, Analyst, and Viewer roles.
+- Suspended or inactive accounts are rejected during authentication.
 - Role rules protect scan execution and destructive scan actions.
 - API requests use DTO validation instead of binding directly to JPA entities.
 - Database credentials are environment-driven for deployment.

@@ -1,7 +1,5 @@
 package com.vaishnavi.aegistrace.service;
 
-import java.util.Collections;
-
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,12 +20,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User u = repository.findAll().stream().filter(x -> username.equals(x.getUsername())).findFirst().orElse(null);
-        if (u == null) throw new UsernameNotFoundException("User not found");
+        User u = repository.findByUsernameIgnoreCase(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return org.springframework.security.core.userdetails.User.builder()
                 .username(u.getUsername())
                 .password(u.getPassword())
-                .authorities(Collections.singletonList(new SimpleGrantedAuthority(u.getRole())))
+                .authorities(new SimpleGrantedAuthority(u.getRole()))
+                .disabled(!"ACTIVE".equalsIgnoreCase(u.getStatus()))
                 .build();
     }
 }

@@ -2,6 +2,7 @@ package com.vaishnavi.aegistrace.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -49,7 +50,9 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**", "/login", "/css/**", "/js/**", "/").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                .requestMatchers("/login", "/css/**", "/js/**", "/").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/register").hasRole("ADMIN")
                 .requestMatchers("/ws/**").authenticated()
                 .requestMatchers("/api/scans/run").hasAnyRole("ADMIN", "ANALYST")
                 .anyRequest().authenticated())

@@ -2,6 +2,8 @@ package com.vaishnavi.aegistrace.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,20 +19,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 50)
     private String username;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     private String role;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true, length = 254)
     private String email;
-    
-    @Column(nullable = false)
+
+    @JsonIgnore
+    @Column(nullable = false, length = 255)
     private String password;
 
+    @Column(nullable = false, length = 20)
     private String status;
 
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public Long getId() {

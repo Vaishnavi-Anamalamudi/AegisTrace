@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.vaishnavi.aegistrace.entity.Alert;
@@ -24,6 +26,8 @@ import com.vaishnavi.aegistrace.service.UserService;
 @Component
 @Profile("!test")
 public class DataLoader implements CommandLineRunner {
+
+    private static final Logger log = LoggerFactory.getLogger(DataLoader.class);
 
     private final UserService userService;
     private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
@@ -57,18 +61,18 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        User admin = userRepository.findByUsername("admin");
+        User admin = userRepository.findByUsernameIgnoreCase("admin").orElse(null);
         if (admin == null) {
             admin = new User();
             admin.setUsername("admin");
-            System.out.println("Admin user created successfully.");
+            admin.setPassword(passwordEncoder.encode("ChangeMe123!"));
+            log.info("Created the development administrator account");
         } else {
-            System.out.println("Admin user refreshed for demo login.");
+            log.debug("Development administrator account already exists");
         }
         admin.setEmail("admin@aegistrace.local");
         admin.setRole("ROLE_ADMIN");
         admin.setStatus("ACTIVE");
-        admin.setPassword(passwordEncoder.encode("ChangeMe123!"));
         userService.createUser(admin);
 
         createDemoUser("analyst", "analyst@aegistrace.local", "ROLE_ANALYST", "Analyst123!");
@@ -78,15 +82,15 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void createDemoUser(String username, String email, String role, String password) {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsernameIgnoreCase(username).orElse(null);
         if (user == null) {
             user = new User();
             user.setUsername(username);
+            user.setPassword(passwordEncoder.encode(password));
         }
         user.setEmail(email);
         user.setRole(role);
         user.setStatus("ACTIVE");
-        user.setPassword(passwordEncoder.encode(password));
         userService.createUser(user);
     }
 
